@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../data/basic_state.dart';
 import '../../../models/book.dart';
+import '../../../repositories/book_dao.dart';
 import '../../../repositories/book_repo.dart';
 import '../../../repositories/database.dart';
 import '../../reader_page/reader_page.dart';

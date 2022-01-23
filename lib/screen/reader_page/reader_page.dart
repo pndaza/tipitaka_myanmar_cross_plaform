@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tipitaka_myanmar/data/basic_state.dart';
-import 'package:tipitaka_myanmar/screen/reader_page/reader_view_controller.dart';
-import 'package:tipitaka_myanmar/screen/reader_page/widgets/book_control_bar.dart';
-import 'package:tipitaka_myanmar/screen/reader_page/widgets/book_view.dart';
-import 'package:tipitaka_myanmar/screen/reader_page/widgets/reader_app_bar.dart';
-import 'package:tipitaka_myanmar/widgets/loading_view.dart';
+
+import '../../data/basic_state.dart';
+import '../../widgets/loading_view.dart';
+import 'reader_view_controller.dart';
+import 'widgets/book_control_bar.dart';
+import 'widgets/book_view.dart';
+import 'widgets/reader_app_bar.dart';
 
 class ReaderPage extends StatelessWidget {
   final String bookId;
@@ -24,6 +25,7 @@ class ReaderPage extends StatelessWidget {
         create: (_) =>
             ReaderViewController(bookId: bookId, initialPage: initialPage),
         builder: (_, __) {
+          //use builder to obtain a BuildContext descendant of the provider
           return Builder(builder: (context) {
             final viewController = context.watch<ReaderViewController>();
             return ValueListenableBuilder(

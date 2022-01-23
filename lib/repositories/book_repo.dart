@@ -1,4 +1,5 @@
 import '../models/book.dart';
+import 'book_dao.dart';
 import 'database.dart';
 
 abstract class BookRepository {
