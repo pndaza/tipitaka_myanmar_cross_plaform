@@ -3,6 +3,13 @@ import 'package:flutter/services.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:path/path.dart';
 import 'package:tipitaka_myanmar/data/shared_pref_client.dart';
+import 'package:tipitaka_myanmar/dialogs/simple_input_dialog.dart';
+import 'package:tipitaka_myanmar/models/bookmark.dart';
+import 'package:tipitaka_myanmar/models/recent.dart';
+import 'package:tipitaka_myanmar/repositories/bookmark_dao.dart';
+import 'package:tipitaka_myanmar/repositories/bookmark_repo.dart';
+import 'package:tipitaka_myanmar/repositories/recent_dao.dart';
+import 'package:tipitaka_myanmar/repositories/recent_repo.dart';
 
 import '../../data/basic_state.dart';
 import '../../data/constants.dart';
@@ -17,11 +24,15 @@ import '../../repositories/paragraph_repo.dart';
 import '../../repositories/toc_repo.dart';
 
 class ReaderViewController {
-  ReaderViewController({required this.bookId, required this.initialPage}) {
+  ReaderViewController(
+      {required this.bookId,
+      required this.initialPage,
+      required this.databaseHelper}) {
     _init();
   }
   final String bookId;
   final int initialPage;
+  final DatabaseHelper databaseHelper;
 
   final _state = ValueNotifier<StateStaus>(StateStaus.loading);
   ValueNotifier<StateStaus> get state => _state;
@@ -49,41 +60,49 @@ class ReaderViewController {
     pages.addAll(await _loadPages());
     _fontSize = ValueNotifier(SharedPreferenceClient.fontSize);
     _state.value = StateStaus.data;
+    await _saveToRecent();
   }
 
   Future<void> _loadBookInfo() async {
     final BookRepository repository =
-        DatabaseBookRepository(DatabaseHelper(), BookDao());
+        DatabaseBookRepository(databaseHelper, BookDao());
     book = await repository.fetchBookInfo(bookId);
   }
 
   Future<List<String>> _loadPages() async {
     String pageBreakMarker = '--';
-    final content = await rootBundle.loadString(join(
+    var content = await rootBundle.loadString(join(
         AssetsInfo.baseAssetsPath, AssetsInfo.bookAssetPath, bookId + '.html'));
+    content = _removetTitleTag(content);
     return content.split(pageBreakMarker);
   }
 
+  String _removetTitleTag(String content) {
+    return content.replaceAll(RegExp(r'<title>.+</title>'), '');
+  }
+
   Future<void> _loadParagraphInfo() async {
-    final repo = ParagraphDatabaseRepository(DatabaseHelper());
+    final repo = ParagraphDatabaseRepository(databaseHelper);
     _firstParagraph = await repo.getFirstParagraph(bookId);
     _lastParagraph = await repo.getLastParagraph(bookId);
   }
 
   Future<int> _getPageNumber({required int paragraphNumber}) async {
-    final repo = ParagraphDatabaseRepository(DatabaseHelper());
+    final repo = ParagraphDatabaseRepository(databaseHelper);
     return await repo.getPageNumber(bookId, paragraphNumber);
   }
 
-  void onPageChanged(int value) {
+  void onPageChanged(int value) async {
     _currentPage.value = value + 1;
+    await _saveToRecent();
   }
 
-  void onSliderPageChanged(double value) {
+  void onSliderPageChanged(double value) async {
     _currentPage.value = value.round();
     debugPrint('current page: ${_currentPage.value}');
     // pageview start at index 0
     pageController.jumpToPage(_currentPage.value - 1);
+    await _saveToRecent();
   }
 
   Future<void> onGotoButtonClicked(BuildContext context) async {
@@ -107,7 +126,6 @@ class ReaderViewController {
   }
 
   Future<List<Toc>> _fetchToc() async {
-    final databaseHelper = DatabaseHelper();
     final tocRepository = TocDatabaseRepository(databaseHelper);
     return await tocRepository.getTocs(bookId);
   }
@@ -143,25 +161,39 @@ class ReaderViewController {
     SharedPreferenceClient.fontSize = value;
   }
 
-  void onAddBookmarkButtonClicked() {
+  Future<void> _saveToRecent() async {
+    final RecentRepository recentRepository =
+        RecentDatabaseRepository(databaseHelper, RecentDao());
+    await recentRepository
+        .insertOrReplace(Recent(bookID: bookId, pageNumber: currentPage.value));
+  }
+
+  void onAddBookmarkButtonClicked(BuildContext context) async {
     // todo
-    /*
-        final note = await showDialog<String>(
+
+    final note = await _showAddBookmarkDialog(context);
+    if (note != null && note.isNotEmpty) {
+      _saveToBookmarks(note);
+    }
+  }
+
+  Future<String?> _showAddBookmarkDialog(BuildContext context) async {
+    return await showDialog<String>(
       context: context,
       builder: (context) {
-        return ThemeConsumer(
-          child: SimpleInputDialog(
-            hintText: 'မှတ်လိုသောစာသား ထည့်ပါ',
-            cancelLabel: 'မမှတ်တော့ဘူး',
-            okLabel: 'မှတ်မယ်',
-          ),
+        return SimpleInputDialog(
+          hintText: 'မှတ်လိုသောစာသား ထည့်ပါ',
+          cancelLabel: 'မမှတ်တော့ဘူး',
+          okLabel: 'မှတ်မယ်',
         );
       },
     );
-    print(note);
-    if (note != null) {
-      vm.saveToBookmark(note);
-    }
-    */
+  }
+
+  Future<void> _saveToBookmarks(String note) async {
+    final repo = BookmarkDatabaseRepository(databaseHelper, BookmarkDao());
+    final bookmark =
+        Bookmark(bookID: bookId, pageNumber: _currentPage.value, note: note);
+    await repo.insert(bookmark);
   }
 }

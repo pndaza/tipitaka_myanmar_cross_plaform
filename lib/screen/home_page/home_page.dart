@@ -34,13 +34,13 @@ class _HomePageState extends State<HomePage> {
               selectedIcon: Icon(Icons.home),
               label: 'Home'),
           NavigationDestination(
-              icon: Icon(Icons.bookmark_border_outlined),
-              selectedIcon: Icon(Icons.bookmark),
-              label: 'Bookmark'),
-          NavigationDestination(
               icon: Icon(Icons.history_outlined),
               selectedIcon: Icon(Icons.history),
               label: 'Recent'),
+          NavigationDestination(
+              icon: Icon(Icons.bookmark_border_outlined),
+              selectedIcon: Icon(Icons.bookmark),
+              label: 'Bookmark'),
           NavigationDestination(
               icon: Icon(Icons.search_outlined),
               selectedIcon: Icon(Icons.search),

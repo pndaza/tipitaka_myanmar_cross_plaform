@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tipitaka_myanmar/repositories/database.dart';
 
 import '../../data/basic_state.dart';
 import '../../widgets/loading_view.dart';
@@ -22,8 +23,10 @@ class ReaderPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Provider<ReaderViewController>(
-        create: (_) =>
-            ReaderViewController(bookId: bookId, initialPage: initialPage),
+        create: (_) => ReaderViewController(
+            bookId: bookId,
+            initialPage: initialPage,
+            databaseHelper: DatabaseHelper()),
         builder: (_, __) {
           //use builder to obtain a BuildContext descendant of the provider
           return Builder(builder: (context) {
