@@ -20,9 +20,9 @@ class ReaderAppBar extends StatelessWidget implements PreferredSizeWidget {
             onPressed: context.read<ReaderViewController>().onIncreaseButtonClicked),
         IconButton(
             icon: const Icon(Icons.remove_circle_outline),
-            onPressed: context.read<ReaderViewController>().onIncreaseButtonClicked),
+            onPressed: context.read<ReaderViewController>().onDecreaseButtonClicked),
         IconButton(
-            icon: const Icon(Icons.book_outlined),
+            icon: const Icon(Icons.bookmark_add_outlined),
             onPressed: context.read<ReaderViewController>().onAddBookmarkButtonClicked),
       ],
     );

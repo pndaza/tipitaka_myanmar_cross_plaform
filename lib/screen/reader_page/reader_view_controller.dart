@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:path/path.dart';
+import 'package:tipitaka_myanmar/data/shared_pref_client.dart';
 
 import '../../data/basic_state.dart';
 import '../../data/constants.dart';
@@ -28,6 +29,9 @@ class ReaderViewController {
   late final ValueNotifier<int> _currentPage;
   ValueNotifier<int> get currentPage => _currentPage;
 
+  late final ValueNotifier<double> _fontSize;
+  ValueNotifier<double> get fontSize => _fontSize;
+
   late final Book book;
   final List<String> pages = [];
   late final int _firstParagraph;
@@ -42,10 +46,9 @@ class ReaderViewController {
 
     await _loadBookInfo();
     await _loadParagraphInfo();
-    _loadPages().then((value) {
-      pages.addAll(value);
-      _state.value = StateStaus.data;
-    });
+    pages.addAll(await _loadPages());
+    _fontSize = ValueNotifier(SharedPreferenceClient.fontSize);
+    _state.value = StateStaus.data;
   }
 
   Future<void> _loadBookInfo() async {
@@ -127,11 +130,17 @@ class ReaderViewController {
   }
 
   void onIncreaseButtonClicked() {
-    // todo
+    _fontSize.value++;
+    _saveFontSize(_fontSize.value);
   }
 
   void onDecreaseButtonClicked() {
-    // todo
+    _fontSize.value--;
+    _saveFontSize(_fontSize.value);
+  }
+
+  void _saveFontSize(double value) {
+    SharedPreferenceClient.fontSize = value;
   }
 
   void onAddBookmarkButtonClicked() {
@@ -155,5 +164,4 @@ class ReaderViewController {
     }
     */
   }
-
 }
