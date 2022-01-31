@@ -1,5 +1,3 @@
-
-
 import 'package:tipitaka_myanmar/models/bookmark.dart';
 import 'package:tipitaka_myanmar/repositories/database.dart';
 
@@ -9,6 +7,7 @@ abstract class BookmarkRepository {
   Future<int> insert(Bookmark bookmark);
 
   Future<int> delete(Bookmark bookmark);
+  Future<int> deletes(List<Bookmark> bookmarks);
 
   Future<int> deleteAll();
 
@@ -31,6 +30,16 @@ class BookmarkDatabaseRepository extends BookmarkRepository {
     final db = await _databaseHelper.database;
     return await db.delete(dao.tableBookmark,
         where: '${dao.columnBookId} = ?', whereArgs: [bookmark.bookID]);
+  }
+
+  @override
+  Future<int> deletes(List<Bookmark> bookmarks) async {
+    int delecteds = 0;
+    for (int i = 0, length = bookmarks.length; i < length; i++) {
+      await delete(bookmarks[i]);
+      delecteds++;
+    }
+    return delecteds;
   }
 
   @override

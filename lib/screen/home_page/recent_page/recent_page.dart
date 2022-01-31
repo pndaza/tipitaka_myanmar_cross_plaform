@@ -5,7 +5,7 @@ import 'package:tipitaka_myanmar/screen/home_page/recent_page/recent_page_app_ba
 import '../../../data/basic_state.dart';
 import '../../../repositories/database.dart';
 import '../../../widgets/loading_view.dart';
-import 'recent_list.dart';
+import 'recent_list_view.dart';
 import 'recent_page_view_controller.dart';
 
 class RecentPage extends StatelessWidget {
@@ -16,6 +16,7 @@ class RecentPage extends StatelessWidget {
     return Provider<RecentPageViewController>(
         create: (_) =>
             RecentPageViewController(databaseHelper: DatabaseHelper()),
+        dispose: (context, value) => value.dispose(),
         builder: (context, __) => Scaffold(
               appBar: const RecentPageAppBar(),
               body: ValueListenableBuilder<StateStaus>(

@@ -43,6 +43,8 @@ class RecentPageViewController {
 
   void dispose() {
     _state.dispose();
+    _isSelectionMode.dispose();
+    _selectedItems.dispose();
   }
 
   Future<List<Recent>> _fetchRecents() async {
@@ -62,12 +64,8 @@ class RecentPageViewController {
   }
 
   Future<void> onRecentItemClicked(BuildContext context, int index) async {
-    if (_isSelectionMode.value) {
-      if (!_selectedItems.value.remove(index)) {
-        _selectedItems.value.add(index);
-      }
-      _selectedItems.value = [..._selectedItems.value];
-    } else {
+    if (!_isSelectionMode.value) {
+      // opening book
       Navigator.push(
           context,
           MaterialPageRoute(
@@ -76,6 +74,19 @@ class RecentPageViewController {
                   initialPage: _recents[index].pageNumber))).then((value) {
         _refresh();
       });
+      return;
+    }
+    if (!_selectedItems.value.contains(index)) {
+      _selectedItems.value = [..._selectedItems.value, index];
+      return;
+    }
+
+    // remove form selected items
+    _selectedItems.value.remove(index);
+    _selectedItems.value = [..._selectedItems.value];
+    // update selection mode
+    if (_selectedItems.value.isEmpty) {
+      _isSelectionMode.value = false;
     }
   }
 
@@ -97,14 +108,24 @@ class RecentPageViewController {
     if (_recents.length == _selectedItems.value.length) {
       // deselecting all
       _selectedItems.value = [];
+      _isSelectionMode.value = false;
     } else {
       // selecting all
       _selectedItems.value = List.generate(_recents.length, (index) => index);
     }
   }
 
-  Future<void> onDeleteActionOfRecentItem(Recent recent) async {
-    await repo.delete(recent);
+  Future<void> onDeleteActionClicked(int index) async {
+    _state.value = StateStaus.loading;
+    // deleting record
+    await repo.delete(_recents[index]);
+    // deleting from loaded
+    _recents.removeAt(index);
+    if (_recents.isEmpty) {
+      _state.value = StateStaus.nodata;
+    } else {
+      _state.value = StateStaus.data;
+    }
   }
 
   Future<void> onDeleteButtonClicked(BuildContext context) async {
@@ -137,7 +158,7 @@ class RecentPageViewController {
         context: context,
         builder: (context) {
           return const ConfirmDialog(
-            message: 'ဖတ်ဆဲ စာအုပ်စာရင်း တွေကို ဖျက်ရန် သေချာပြီလား',
+            message: 'ဖတ်ဆဲ စာအုပ်စာရင်း များကို ဖျက်ရန် သေချာပြီလား',
             okLabel: 'ဖျက်မယ်',
             cancelLabel: 'မဖျက်တော့ဘူး',
           );

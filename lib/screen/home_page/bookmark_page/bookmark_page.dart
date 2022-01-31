@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tipitaka_myanmar/data/basic_state.dart';
 import 'package:tipitaka_myanmar/repositories/database.dart';
+import 'package:tipitaka_myanmar/screen/home_page/bookmark_page/bookmark_page_app_bar.dart';
 import 'package:tipitaka_myanmar/widgets/loading_view.dart';
 
 import 'bookmark_list_view.dart';
@@ -15,17 +16,9 @@ class BookmarkPage extends StatelessWidget {
     return Provider<BookmarkPageViewController>(
         create: (_) =>
             BookmarkPageViewController(databaseHelper: DatabaseHelper()),
+        dispose: (context, value) => value.dispose(),
         builder: (context, __) => Scaffold(
-              appBar: AppBar(
-                title: const Text('မှတ်စုများ'),
-                actions: [
-                  IconButton(
-                      onPressed: ()=>context
-                          .read<BookmarkPageViewController>()
-                          .onClickedDeleteButton(context),
-                      icon: const Icon(Icons.delete))
-                ],
-              ),
+              appBar: const BookmarkPageAppBar(),
               body: ValueListenableBuilder<StateStaus>(
                   valueListenable:
                       context.watch<BookmarkPageViewController>().state,

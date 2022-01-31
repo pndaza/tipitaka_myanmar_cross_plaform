@@ -16,9 +16,9 @@ class RecentlistView extends StatelessWidget {
     final controller = context.read<RecentPageViewController>();
     final recents = controller.recents;
     return ValueListenableBuilder2<bool, List<int>>(
-      first: controller.isSelectionMode,
-      second: controller.selectedItems,
-        builder: (_, isSelectionMode,selectedItems, __) {
+        first: controller.isSelectionMode,
+        second: controller.selectedItems,
+        builder: (_, isSelectionMode, selectedItems, __) {
           return SlidableAutoCloseBehavior(
             child: ListView.separated(
               itemCount: recents.length,
@@ -26,20 +26,13 @@ class RecentlistView extends StatelessWidget {
                 recent: recents.elementAt(index),
                 isSelectingMode: isSelectionMode,
                 isSelected: selectedItems.contains(index),
-                onTap: () {
-                  context
-                      .read<RecentPageViewController>()
-                      .onRecentItemClicked(context, index);
-                },
-                onLongPress: () {
-                  context
-                      .read<RecentPageViewController>()
-                      .onRecentItemPressed(context, index);
-                },
-                onDelete: () => context
-                    .read<RecentPageViewController>()
-                    .onDeleteActionOfRecentItem(recents.elementAt(index)),
-              ), separatorBuilder: (_,__) => const Divider(),
+                onTap: () => controller.onRecentItemClicked(context, index),
+                onLongPress: () =>
+                    controller.onRecentItemPressed(context, index),
+                onDelete: () => controller
+                    .onDeleteActionClicked(index),
+              ),
+              separatorBuilder: (_, __) => const Divider(),
             ),
           );
         });

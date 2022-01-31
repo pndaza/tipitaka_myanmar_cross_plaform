@@ -2,22 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tipitaka_myanmar/utils/mm_number.dart';
 import 'package:tipitaka_myanmar/widgets/multi_value_listenable_builder.dart';
-import './recent_page_view_controller.dart';
 
-class RecentPageAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const RecentPageAppBar({
+import 'bookmark_page_view_controller.dart';
+
+class BookmarkPageAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const BookmarkPageAppBar({
     Key? key,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final controller = context.read<RecentPageViewController>();
+    final controller = context.read<BookmarkPageViewController>();
     return ValueListenableBuilder2<bool, List<int>>(
         first: controller.isSelectionMode,
         second: controller.selectedItems,
         builder: (_, isSelectionMode, selectedItems, __) {
           if (!isSelectionMode || controller.selectedItems.value.isEmpty) {
             return AppBar(
-              title: const Text('ဖတ်ဆဲစာအုပ်များ'),
+              title: const Text('မှတ်စုများ'),
               centerTitle: true,
             );
           } else {
@@ -32,7 +33,7 @@ class RecentPageAppBar extends StatelessWidget implements PreferredSizeWidget {
                     onPressed: controller.onSelectAllButtonClicked,
                     icon: Icon(
                       Icons.select_all_outlined,
-                      color: controller.recents.length == selectedItems.length
+                      color: controller.bookmarks.length == selectedItems.length
                           ? Theme.of(context).colorScheme.primaryVariant
                           : Theme.of(context).colorScheme.onPrimary,
                     )),
