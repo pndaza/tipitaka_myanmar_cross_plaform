@@ -59,7 +59,7 @@ class SimpleInputDialog extends StatelessWidget {
       required BuildContext context}) {
     final buttonStyle = ButtonStyle(
         foregroundColor:
-            MaterialStateProperty.all(Theme.of(context).primaryColor));
+            MaterialStateProperty.all(Theme.of(context).colorScheme.primary));
     return Row(
       children: [
         Expanded(

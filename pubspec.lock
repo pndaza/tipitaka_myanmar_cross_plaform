@@ -141,6 +141,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.15.0"
+  community_material_icon:
+    dependency: "direct main"
+    description:
+      name: community_material_icon
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "5.9.55"
   convert:
     dependency: transitive
     description:
@@ -204,6 +211,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
+  flex_color_scheme:
+    dependency: "direct main"
+    description:
+      name: flex_color_scheme
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.2.0"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -269,12 +283,12 @@ packages:
     source: hosted
     version: "0.8.3+1"
   fwfh_text_style:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: fwfh_text_style
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.7.2"
+    version: "2.7.3+1"
   glob:
     dependency: transitive
     description:
@@ -651,6 +665,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0"
+  substring_highlight:
+    dependency: "direct main"
+    description:
+      name: substring_highlight
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.33"
   synchronized:
     dependency: transitive
     description:

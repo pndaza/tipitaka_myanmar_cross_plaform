@@ -1,45 +1,83 @@
+import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:tipitaka_myanmar/models/recent.dart';
+import 'package:tipitaka_myanmar/utils/mm_number.dart';
 
 class RecentListTile extends StatelessWidget {
   const RecentListTile(
-      {Key? key, required this.recent, this.onTap, this.onDelete})
+      {Key? key,
+      required this.recent,
+      this.isSelected = false,
+      this.isSelectingMode = false,
+      this.onTap,
+      this.onLongPress,
+      this.onDelete})
       : super(key: key);
   final Recent recent;
-  final VoidCallback? onDelete;
+  final bool isSelected;
+  final bool isSelectingMode;
   final VoidCallback? onTap;
+  final VoidCallback? onLongPress;
+  final VoidCallback? onDelete;
 
   @override
   Widget build(BuildContext context) {
     return Slidable(
-        endActionPane: ActionPane(
-          motion: const DrawerMotion(),
-          extentRatio: 0.25,
-          children: [
-            SlidableAction(
-              //label: 'Archive',
-              backgroundColor: Colors.red,
-              icon: Icons.delete,
-              onPressed: (context) {
-                if (onDelete != null) onDelete!();
-              },
-            ),
-          ],
-        ),
+        // key: ValueKey(recent.bookID),
+        groupTag: 0,
+        endActionPane: endActionPane(),
         child: Builder(
+            // wrapping list tile in builder to access sliable by context
             builder: (context) => ListTile(
                   onTap: () {
-                    if (onTap != null) onTap!();
+                    final slidableController = Slidable.of(context)!;
+                    if (slidableController.direction.value == -1) {
+                      slidableController.close();
+                    } else if (onTap != null) {
+                      onTap!();
+                    }
                   },
-                  title: Text(recent.bookName!),
+                  onLongPress: onLongPress,
+                  selected: isSelected,
+                  leading: !isSelectingMode
+                      ? null
+                      : isSelected
+                          ? Icon(
+                              Icons.check_circle,
+                              color: Theme.of(context).primaryColor,
+                            )
+                          : const Icon(CommunityMaterialIcons
+                              .checkbox_blank_circle_outline),
+                  title: Text(
+                    recent.bookName!,
+                    style: const TextStyle(fontSize: 20),
+                  ),
                   trailing: SizedBox(
                     width: 105,
                     child: Text(
-                      recent.pageNumber.toString(),
+                      MmNumber.get(recent.pageNumber),
                       textAlign: TextAlign.end,
+                      style: const TextStyle(fontSize: 20),
                     ),
                   ),
                 )));
+  }
+
+  ActionPane endActionPane() {
+    return ActionPane(
+      motion: const DrawerMotion(),
+      extentRatio: 0.25,
+      children: [
+        SlidableAction(
+          //label: 'Archive',
+          backgroundColor: Colors.red,
+          icon: Icons.delete,
+          onPressed: (context) {
+            if (onDelete != null) onDelete!();
+          },
+        ),
+      ],
+    );
   }
 }

@@ -1,1 +1,1 @@
-enum StateStaus { loading, data, nodata }
+enum StateStaus { loading, data, nodata, initial }

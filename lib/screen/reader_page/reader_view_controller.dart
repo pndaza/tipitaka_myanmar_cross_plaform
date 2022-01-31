@@ -63,6 +63,12 @@ class ReaderViewController {
     await _saveToRecent();
   }
 
+  void dispose() {
+    _state.dispose();
+    _currentPage.dispose();
+    _fontSize.dispose();
+  }
+
   Future<void> _loadBookInfo() async {
     final BookRepository repository =
         DatabaseBookRepository(databaseHelper, BookDao());

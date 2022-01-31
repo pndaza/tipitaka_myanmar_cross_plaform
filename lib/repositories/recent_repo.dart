@@ -4,11 +4,12 @@ import 'package:tipitaka_myanmar/repositories/database.dart';
 
 import 'recent_dao.dart';
 
-
 abstract class RecentRepository {
   Future<int> insertOrReplace(Recent recent);
 
   Future<int> delete(Recent recent);
+
+  Future<int> deletes(List<Recent> recents);
 
   Future<int> deleteAll();
 
@@ -43,6 +44,16 @@ class RecentDatabaseRepository implements RecentRepository {
     final db = await databaseProvider.database;
     return await db.delete(dao.tableRecent,
         where: '${dao.columnBookId} = ?', whereArgs: [recent.bookID]);
+  }
+
+  @override
+  Future<int> deletes(List<Recent> recents) async {
+    int delecteds = 0;
+    for (int i = 0, length = recents.length; i < length; i++) {
+      await delete(recents[i]);
+      delecteds++;
+    }
+    return delecteds;
   }
 
   @override

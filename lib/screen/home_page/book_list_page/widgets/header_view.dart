@@ -12,10 +12,10 @@ class HeaderView extends StatelessWidget {
       child: Center(
           child: Text(
         catName,
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 22,
           fontWeight: FontWeight.bold,
-          color: Colors.brown,
+          color: Theme.of(context).colorScheme.secondary,
         ),
       )),
     );

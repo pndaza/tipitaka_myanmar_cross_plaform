@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tipitaka_myanmar/screen/home_page/recent_page/recent_page_app_bar.dart';
 
 import '../../../data/basic_state.dart';
 import '../../../repositories/database.dart';
@@ -15,13 +16,8 @@ class RecentPage extends StatelessWidget {
     return Provider<RecentPageViewController>(
         create: (_) =>
             RecentPageViewController(databaseHelper: DatabaseHelper()),
-        builder: (_, __) {
-          return Builder(builder: (context) {
-            //use builder to obtain a BuildContext descendant of the provider
-            return Scaffold(
-              appBar: AppBar(
-                title: const Text('ဖတ်ဆဲစာအုပ်များ'),
-              ),
+        builder: (context, __) => Scaffold(
+              appBar: const RecentPageAppBar(),
               body: ValueListenableBuilder<StateStaus>(
                   valueListenable:
                       context.watch<RecentPageViewController>().state,
@@ -29,19 +25,13 @@ class RecentPage extends StatelessWidget {
                     if (state == StateStaus.loading) {
                       return const LoadingView();
                     }
-
                     if (state == StateStaus.nodata) {
                       return const Center(
                         child: Text('ဖတ်ဆဲစာအုပ်များ မရှိသေးပါ'),
                       );
                     }
-                    
-                    return RecentlistView(
-                        recents:
-                            context.watch<RecentPageViewController>().recents);
+                    return const RecentlistView();
                   }),
-            );
-          });
-        });
+            ));
   }
 }

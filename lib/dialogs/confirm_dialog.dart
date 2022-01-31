@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 enum OkCancelAction { ok, cancel }
 
 class ConfirmDialog extends StatelessWidget {
-  final String title;
+  final String? title;
   final String message;
   final String cancelLabel;
   final String okLabel;
 
   const ConfirmDialog(
       {Key? key,
-      required this.title,
+      this.title,
       required this.message,
       required this.cancelLabel,
       required this.okLabel})

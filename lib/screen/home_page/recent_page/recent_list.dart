@@ -1,26 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
-import 'package:tipitaka_myanmar/models/recent.dart';
-import 'package:tipitaka_myanmar/screen/home_page/recent_page/recent_list_tile.dart';
-import 'package:tipitaka_myanmar/screen/home_page/recent_page/recent_page_view_controller.dart';
+
+import '../../../widgets/multi_value_listenable_builder.dart';
+import 'recent_list_tile.dart';
+import 'recent_page_view_controller.dart';
 
 class RecentlistView extends StatelessWidget {
-  const RecentlistView({Key? key, required this.recents}) : super(key: key);
-  final List<Recent> recents;
+  const RecentlistView({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: recents.length,
-      itemBuilder: (_, index) => RecentListTile(
-        recent: recents.elementAt(index),
-        onTap: () => context
-            .read<RecentPageViewController>()
-            .onRecentItemClicked(context, recents.elementAt(index)),
-        onDelete: () => context
-            .read<RecentPageViewController>()
-            .onDeleteActionOfRecentItem(recents.elementAt(index)),
-      ),
-    );
+    final controller = context.read<RecentPageViewController>();
+    final recents = controller.recents;
+    return ValueListenableBuilder2<bool, List<int>>(
+      first: controller.isSelectionMode,
+      second: controller.selectedItems,
+        builder: (_, isSelectionMode,selectedItems, __) {
+          return SlidableAutoCloseBehavior(
+            child: ListView.separated(
+              itemCount: recents.length,
+              itemBuilder: (_, index) => RecentListTile(
+                recent: recents.elementAt(index),
+                isSelectingMode: isSelectionMode,
+                isSelected: selectedItems.contains(index),
+                onTap: () {
+                  context
+                      .read<RecentPageViewController>()
+                      .onRecentItemClicked(context, index);
+                },
+                onLongPress: () {
+                  context
+                      .read<RecentPageViewController>()
+                      .onRecentItemPressed(context, index);
+                },
+                onDelete: () => context
+                    .read<RecentPageViewController>()
+                    .onDeleteActionOfRecentItem(recents.elementAt(index)),
+              ), separatorBuilder: (_,__) => const Divider(),
+            ),
+          );
+        });
   }
 }

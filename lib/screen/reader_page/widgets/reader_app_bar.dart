@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tipitaka_myanmar/screen/reader_page/reader_view_controller.dart';
+
+import '../reader_view_controller.dart';
 
 class ReaderAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;

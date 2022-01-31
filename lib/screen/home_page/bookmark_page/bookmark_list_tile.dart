@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:tipitaka_myanmar/models/bookmark.dart';
+import 'package:tipitaka_myanmar/utils/mm_number.dart';
 
 class BookmarkListTile extends StatelessWidget {
   // final BookmarkPageViewModel bookmarkViewmodel;
@@ -16,7 +17,7 @@ class BookmarkListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Slidable(
-        startActionPane: ActionPane(
+        endActionPane: ActionPane(
           motion: const DrawerMotion(),
           extentRatio: 0.25,
           children: [
@@ -35,20 +36,16 @@ class BookmarkListTile extends StatelessWidget {
                   onTap: () {
                     if (onTap != null) onTap!();
                   },
-                  title: Text(bookmark.note),
+                  title: Text(bookmark.note, style: const TextStyle(fontSize: 20),),
                   subtitle: Text(bookmark.bookName!),
                   trailing: SizedBox(
                     width: 100,
-                    child: Row(
-                      children: [
-                        Text(
-                          bookmark.pageNumber.toString(),
-                          textAlign: TextAlign.end,
-                        ),
-                      ],
+                    child: Text(
+                      MmNumber.get(bookmark.pageNumber),
+                      textAlign: TextAlign.end,
+                      style: const TextStyle(fontSize: 20),
                     ),
                   ),
                 )));
   }
-
 }

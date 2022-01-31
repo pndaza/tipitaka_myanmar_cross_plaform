@@ -10,7 +10,7 @@ class BookmarklistView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return ListView.separated(
       itemCount: bookmarks.length,
       itemBuilder: (_, index) => BookmarkListTile(
         bookmark: bookmarks.elementAt(index),
@@ -21,6 +21,7 @@ class BookmarklistView extends StatelessWidget {
             .read<BookmarkPageViewController>()
             .onDeleteActionOfBookmarkItem(bookmarks.elementAt(index)),
       ),
+      separatorBuilder: (_, __) => const Divider(),
     );
   }
 }

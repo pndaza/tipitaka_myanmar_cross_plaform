@@ -15,17 +15,14 @@ class BookmarkPage extends StatelessWidget {
     return Provider<BookmarkPageViewController>(
         create: (_) =>
             BookmarkPageViewController(databaseHelper: DatabaseHelper()),
-        builder: (_, __) {
-          return Builder(builder: (context) {
-            //use builder to obtain a BuildContext descendant of the provider
-            return Scaffold(
+        builder: (context, __) => Scaffold(
               appBar: AppBar(
                 title: const Text('မှတ်စုများ'),
                 actions: [
                   IconButton(
-                      onPressed: context
+                      onPressed: ()=>context
                           .read<BookmarkPageViewController>()
-                          .onClickedDeleteButton,
+                          .onClickedDeleteButton(context),
                       icon: const Icon(Icons.delete))
                 ],
               ),
@@ -47,8 +44,6 @@ class BookmarkPage extends StatelessWidget {
                             .watch<BookmarkPageViewController>()
                             .bookmarks);
                   }),
-            );
-          });
-        });
+            ));
   }
 }

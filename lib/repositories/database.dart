@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -9,7 +10,6 @@ import '../data/constants.dart';
 import '../data/shared_pref_client.dart';
 
 class DatabaseHelper {
-
   DatabaseHelper._();
   static final DatabaseHelper _instance = DatabaseHelper._();
   factory DatabaseHelper() => _instance;
@@ -37,17 +37,40 @@ class DatabaseHelper {
       return await openDatabase(dbFilePath);
     }
 
+    final recents = <Map<String, Object?>>[];
+    final bookmarks = <Map<String, Object?>>[];
+
     if (exists &&
         SharedPreferenceClient.isInitialized &&
         SharedPreferenceClient.databaseVerion < DatabaseInfo.dbVersion) {
       // database is outdated
+
+      debugPrint('update mode');
+
+      // backuping user data to memory
+      final oldDatabase = await openDatabase(dbFilePath);
+      recents
+          .addAll(await backup(oldDatabase: oldDatabase, tableName: 'recent'));
+      bookmarks.addAll(
+          await backup(oldDatabase: oldDatabase, tableName: 'bookmark'));
 
       // deleting old database
       await deleteDatabase(dbFilePath);
       // saving new database
       await _saveDatabaseFromAssets(dbFilePath: dbFilePath);
 
-      return await openDatabase(dbFilePath);
+      //  databaseHelper = DatabaseHelper();
+      // restoring user data
+      final newDatabase = await openDatabase(dbFilePath);
+      if (recents.isNotEmpty) {
+        await restore(newDatabase: newDatabase, tableName: 'recent', values: recents);
+      }
+
+      if (bookmarks.isNotEmpty) {
+        await restore(newDatabase: newDatabase, tableName: 'bookmark', values: bookmarks);
+      }
+
+      return newDatabase;
     }
 
     // database is not initialized
@@ -79,6 +102,21 @@ class DatabaseHelper {
         data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
 
     await File(destination).writeAsBytes(bytes, flush: true);
+  }
+
+  Future<List<Map<String, Object?>>> backup(
+      {required Database oldDatabase, required String tableName}) async {
+    // print('maps: ${maps.length}');
+    return await oldDatabase.query(tableName);
+  }
+
+  Future<void> restore(
+      {required Database newDatabase,
+      required String tableName,
+      required List<Map<String, Object?>> values}) async {
+    for (final value in values) {
+      await newDatabase.insert(tableName, value);
+    }
   }
 
   Future close() async {

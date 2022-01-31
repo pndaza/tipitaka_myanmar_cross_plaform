@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tipitaka_myanmar/dialogs/confirm_dialog.dart';
 
 import '../../../data/basic_state.dart';
 import '../../../models/bookmark.dart';
@@ -34,6 +35,10 @@ class BookmarkPageViewController {
     }
   }
 
+  void dispose() {
+    _state.dispose();
+  }
+
   Future<List<Bookmark>> _fetchBookmarks() async {
     return await repo.getBookmarks();
   }
@@ -66,7 +71,25 @@ class BookmarkPageViewController {
     await repo.delete(bookmark);
   }
 
-  Future<void> onClickedDeleteButton() async {
-    await repo.deleteAll();
+  Future<void> onClickedDeleteButton(BuildContext context) async {
+    final userActions = await _getComfirmation(context);
+    if (userActions != null && userActions == OkCancelAction.ok) {
+      _state.value = StateStaus.loading;
+      await repo.deleteAll();
+      _bookmarks.clear();
+      _state.value = StateStaus.nodata;
+    }
+  }
+
+  Future<OkCancelAction?> _getComfirmation(BuildContext context) async {
+    return await showDialog<OkCancelAction>(
+        context: context,
+        builder: (context) {
+          return const ConfirmDialog(
+            message: 'မှတ်သားထားသမျှ အားလုံးကို ဖျက်ရန် သေချာပြီလား',
+            okLabel: 'ဖျက်မယ်',
+            cancelLabel: 'မဖျက်တော့ဘူး',
+          );
+        });
   }
 }
