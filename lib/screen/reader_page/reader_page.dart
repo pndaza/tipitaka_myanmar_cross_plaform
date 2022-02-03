@@ -40,7 +40,10 @@ class ReaderPage extends StatelessWidget {
                   debugPrint('data loaded');
                   return Scaffold(
                     appBar: ReaderAppBar(title: viewController.book.name),
-                    body: BookView(pages: viewController.pages),
+                    body: BookView(
+                      pages: viewController.pages,
+                      textToHighlight: textToHightlight,
+                    ),
                     bottomNavigationBar: const BookControlBar(),
                   );
                 });

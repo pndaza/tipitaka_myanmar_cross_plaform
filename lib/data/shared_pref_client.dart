@@ -7,10 +7,13 @@ const _keyIsInitialized = 'is_initialized';
 const _defaultIsInitialized = false;
 
 const _keyDatabaseVersion = 'database_version';
-const _defaultDatabaseVersion = 1;
+const _defaultDatabaseVersion = 0;
 
 const _keyFontSize = 'font_size';
 const _defaultFontSize = 18.0;
+
+const _keyThemeModeIndex = 'theme_mode_index';
+const _defaultThemeModeIndex = 0;
 
 class SharedPreferenceClient {
   SharedPreferenceClient._();
@@ -32,4 +35,9 @@ class SharedPreferenceClient {
   static double get fontSize =>
       instance.getDouble(_keyFontSize) ?? _defaultFontSize;
   static set fontSize(double value) => instance.setDouble(_keyFontSize, value);
+
+  static int get themeModeIndex =>
+      instance.getInt(_keyThemeModeIndex) ?? _defaultThemeModeIndex;
+  static set themeModeIndex(int value) =>
+      instance.setInt(_keyThemeModeIndex, value);
 }

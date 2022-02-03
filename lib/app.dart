@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tipitaka_myanmar/controllers/theme_controller.dart';
 
+import 'controllers/theme_controller.dart';
+import 'deep_link_handler.dart';
+import 'deep_link_view.dart';
 import 'screen/home_page/home_page.dart';
 
 class MyApp extends StatelessWidget {
@@ -10,6 +12,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final _deepLinkBloc = DeepLinkHandler();
+
     return Provider<ThemeController>(
         create: (_) => ThemeController(),
         builder: (context, __) {
@@ -26,7 +30,18 @@ class MyApp extends StatelessWidget {
                       colorScheme: const ColorScheme.light().copyWith(
                           primary: Colors.brown, secondary: Colors.brown[400])),
                   darkTheme: ThemeData.dark(),
-                  home: const HomePage(),
+                  home: StreamBuilder<String>(
+                      stream: _deepLinkBloc.state,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          debugPrint(snapshot.data);
+                          debugPrint('opening from deep link');
+                          return DeepLinkView(
+                              key: Key(snapshot.data!), url: snapshot.data!);
+                        } else {
+                          return const HomePage();
+                        }
+                      }),
                 );
               });
         });

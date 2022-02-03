@@ -13,7 +13,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_widget_from_html_core: ^0.8.4
   fwfh_selectable_text: ^0.8.3+1
-  fwfh_text_style: ^2.7.3+1
+  # fwfh_text_style: ^2.7.3+1
   sqflite: ^2.0.2
   path_provider: ^2.0.8
   path: ^1.8.0
@@ -27,7 +27,7 @@ dependencies:
   flutter_slidable: ^1.2.0
   substring_highlight: ^1.0.33
   community_material_icon: ^5.9.55
-  flex_color_scheme: ^4.2.0
+  # flex_color_scheme: ^4.2.0
 
 dev_dependencies:
   flutter_test:
@@ -41,8 +41,7 @@ flutter:
   uses-material-design: true
 
   assets:
-  - assets/database/tipitaka_myanmar.db
+  - assets/database/tipi_mm.db
   - assets/books/
-  - assets/web/
   - assets/info.html
 

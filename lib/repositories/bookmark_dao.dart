@@ -1,5 +1,4 @@
-import 'package:tipitaka_myanmar/models/bookmark.dart';
-
+import '../models/bookmark.dart';
 import 'dao.dart';
 
 class BookmarkDao extends Dao<Bookmark> {

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../data/shared_pref_client.dart';
+
 class ThemeController {
-  final _themeMode = ValueNotifier(ThemeMode.light);
+  late final ValueNotifier<ThemeMode> _themeMode =
+      ValueNotifier(ThemeMode.values[SharedPreferenceClient.themeModeIndex]);
   ValueNotifier<ThemeMode> get themeMode => _themeMode;
 
   void toggle() {
@@ -10,5 +13,10 @@ class ThemeController {
     } else {
       _themeMode.value = ThemeMode.light;
     }
+    _persist(_themeMode.value);
+  }
+
+  void _persist(ThemeMode themeMode) {
+    SharedPreferenceClient.themeModeIndex = themeMode.index;
   }
 }

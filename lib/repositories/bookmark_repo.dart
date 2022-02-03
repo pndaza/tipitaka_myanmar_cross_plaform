@@ -1,7 +1,6 @@
-import 'package:tipitaka_myanmar/models/bookmark.dart';
-import 'package:tipitaka_myanmar/repositories/database.dart';
-
+import '../models/bookmark.dart';
 import 'bookmark_dao.dart';
+import 'database.dart';
 
 abstract class BookmarkRepository {
   Future<int> insert(Bookmark bookmark);

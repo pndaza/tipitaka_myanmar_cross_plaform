@@ -1,5 +1,4 @@
-import 'package:tipitaka_myanmar/models/recent.dart';
-
+import '../models/recent.dart';
 import 'dao.dart';
 
 class RecentDao implements Dao<Recent> {

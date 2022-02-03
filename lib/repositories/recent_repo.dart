@@ -1,7 +1,7 @@
 import 'package:sqflite/sql.dart';
-import 'package:tipitaka_myanmar/models/recent.dart';
-import 'package:tipitaka_myanmar/repositories/database.dart';
 
+import '../models/recent.dart';
+import 'database.dart';
 import 'recent_dao.dart';
 
 abstract class RecentRepository {

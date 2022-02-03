@@ -1,5 +1,4 @@
-import 'package:tipitaka_myanmar/models/toc.dart';
-
+import '../models/toc.dart';
 import 'dao.dart';
 
 class TocDao implements Dao<Toc> {

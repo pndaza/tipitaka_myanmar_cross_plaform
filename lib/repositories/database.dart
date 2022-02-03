@@ -30,6 +30,8 @@ class DatabaseHelper {
 
     var exists = await databaseExists(dbFilePath);
 
+    debugPrint('db version: ${SharedPreferenceClient.databaseVerion}');
+
     if (exists &&
         SharedPreferenceClient.isInitialized &&
         SharedPreferenceClient.databaseVerion == DatabaseInfo.dbVersion) {
@@ -40,9 +42,11 @@ class DatabaseHelper {
     final recents = <Map<String, Object?>>[];
     final bookmarks = <Map<String, Object?>>[];
 
-    if (exists &&
-        SharedPreferenceClient.isInitialized &&
-        SharedPreferenceClient.databaseVerion < DatabaseInfo.dbVersion) {
+    if ((exists &&
+            SharedPreferenceClient.isInitialized &&
+            SharedPreferenceClient.databaseVerion < DatabaseInfo.dbVersion) ||
+        (exists &&
+            SharedPreferenceClient.databaseVerion < DatabaseInfo.dbVersion)) {
       // database is outdated
 
       debugPrint('update mode');
@@ -63,18 +67,20 @@ class DatabaseHelper {
       // restoring user data
       final newDatabase = await openDatabase(dbFilePath);
       if (recents.isNotEmpty) {
-        await restore(newDatabase: newDatabase, tableName: 'recent', values: recents);
+        await restore(
+            newDatabase: newDatabase, tableName: 'recent', values: recents);
       }
 
       if (bookmarks.isNotEmpty) {
-        await restore(newDatabase: newDatabase, tableName: 'bookmark', values: bookmarks);
+        await restore(
+            newDatabase: newDatabase, tableName: 'bookmark', values: bookmarks);
       }
 
       return newDatabase;
     }
 
     // database is not initialized
-
+    debugPrint('new db mode');
     // make sure destination path is created
     try {
       await Directory(dirname(dbPathToStore)).create(recursive: true);

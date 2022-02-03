@@ -1,5 +1,5 @@
 
-import 'package:tipitaka_myanmar/repositories/database.dart';
+import 'database.dart';
 
 abstract class ParagraphRepository {
   Future<int> getFirstParagraph(String bookID);

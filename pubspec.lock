@@ -211,13 +211,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
-  flex_color_scheme:
-    dependency: "direct main"
-    description:
-      name: flex_color_scheme
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "4.2.0"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -283,7 +276,7 @@ packages:
     source: hosted
     version: "0.8.3+1"
   fwfh_text_style:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: fwfh_text_style
       url: "https://pub.dartlang.org"

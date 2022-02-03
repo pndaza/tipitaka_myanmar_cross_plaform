@@ -2,11 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:fwfh_selectable_text/fwfh_selectable_text.dart';
 import 'package:provider/provider.dart';
-import 'package:tipitaka_myanmar/screen/reader_page/reader_view_controller.dart';
+
+import '../../../utils/mm_number.dart';
+import '../reader_view_controller.dart';
 
 class BookPage extends StatelessWidget {
-  const BookPage({Key? key, required this.content}) : super(key: key);
-  final String content;
+  const BookPage(
+      {Key? key,
+      required this.pageContent,
+      required this.pageNumber,
+      this.textToHighlight = ''})
+      : super(key: key);
+  final String pageContent;
+  final int pageNumber;
+  final String textToHighlight;
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +27,10 @@ class BookPage extends StatelessWidget {
         child: ValueListenableBuilder<double>(
             valueListenable: context.read<ReaderViewController>().fontSize,
             builder: (_, fontSize, __) {
+              var htmlContent = _addPageNumber(pageContent, pageNumber);
+              htmlContent = _addHighlight(pageContent, textToHighlight);
               return HtmlWidget(
-                content,
+                htmlContent,
                 textStyle: TextStyle(fontSize: fontSize),
                 factoryBuilder: () => _SelectableFactory(),
                 customStylesBuilder: (element) {
@@ -33,6 +44,10 @@ class BookPage extends StatelessWidget {
                       element.localName == 'h5' ||
                       element.localName == 'h6') {
                     return {'text-align': 'center'};
+                  }
+
+                  if (element.className == 'highlighted') {
+                    return {'background': 'lightcyan', 'color': 'black'};
                   }
                   /*
             if (element.localName == 'a') {
@@ -50,6 +65,24 @@ class BookPage extends StatelessWidget {
             }),
       ),
     );
+  }
+
+  String _addPageNumber(String pageContent, int pageNumber) {
+    // page number will not shown in first page
+    if (pageNumber == 1) {
+      return pageContent;
+    } else {
+      return '<p>${MmNumber.get(pageNumber)}</p><br>$pageContent}';
+    }
+  }
+
+  String _addHighlight(String pageContent, String textToHighlight) {
+    if (textToHighlight.isEmpty) {
+      return pageContent;
+    } else {
+      return pageContent.replaceAll(
+          textToHighlight, '<span class="highlighted">$textToHighlight</span>');
+    }
   }
 }
 

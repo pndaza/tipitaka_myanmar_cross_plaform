@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tipitaka_myanmar/models/toc.dart';
+
+import '../models/toc.dart';
 
 class TocDialog extends StatelessWidget {
   final List<Toc> tocs;
