@@ -34,7 +34,7 @@ class BookmarkPageAppBar extends StatelessWidget implements PreferredSizeWidget 
                     icon: Icon(
                       Icons.select_all_outlined,
                       color: controller.bookmarks.length == selectedItems.length
-                          ? Theme.of(context).colorScheme.primaryVariant
+                          ? Theme.of(context).colorScheme.primary
                           : Theme.of(context).colorScheme.onPrimary,
                     )),
                 // delete button

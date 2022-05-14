@@ -14,6 +14,7 @@ class BookView extends StatelessWidget {
   Widget build(BuildContext context) {
     debugPrint('page count: ${pages.length}');
     return PageView.builder(
+      physics: const PageScrollPhysics(),
       itemCount: pages.length,
       itemBuilder: (_, index) {
         return BookPage(

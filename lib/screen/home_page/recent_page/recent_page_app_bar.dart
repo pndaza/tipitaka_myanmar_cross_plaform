@@ -33,7 +33,7 @@ class RecentPageAppBar extends StatelessWidget implements PreferredSizeWidget {
                     icon: Icon(
                       Icons.select_all_outlined,
                       color: controller.recents.length == selectedItems.length
-                          ? Theme.of(context).colorScheme.primaryVariant
+                          ? Theme.of(context).colorScheme.primary
                           : Theme.of(context).colorScheme.onPrimary,
                     )),
                 // delete button
