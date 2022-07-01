@@ -28,7 +28,7 @@ class BookPage extends StatelessWidget {
             valueListenable: context.read<ReaderViewController>().fontSize,
             builder: (_, fontSize, __) {
               var htmlContent = _addPageNumber(pageContent, pageNumber);
-              htmlContent = _addHighlight(pageContent, textToHighlight);
+              htmlContent = _addHighlight(htmlContent, textToHighlight);
               return HtmlWidget(
                 htmlContent,
                 textStyle: TextStyle(fontSize: fontSize),
@@ -47,7 +47,11 @@ class BookPage extends StatelessWidget {
                   }
 
                   if (element.className == 'highlighted') {
-                    return {'background': 'lightcyan', 'color': 'black'};
+                    return {'background': 'orange', 'color': 'black'};
+                  }
+
+                  if (element.className == 'page_number') {
+                    return {'color': 'orange'};
                   }
                   /*
             if (element.localName == 'a') {
@@ -72,7 +76,7 @@ class BookPage extends StatelessWidget {
     if (pageNumber == 1) {
       return pageContent;
     } else {
-      return '<p>${MmNumber.get(pageNumber)}</p><br>$pageContent}';
+      return '<hr /><p class="page_number">${MmNumber.get(pageNumber)}</p><br/>$pageContent';
     }
   }
 

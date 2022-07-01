@@ -1,26 +1,29 @@
+import 'dart:io' show Platform;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:path/path.dart';
-import 'package:tipitaka_myanmar/data/shared_pref_client.dart';
-import 'package:tipitaka_myanmar/dialogs/simple_input_dialog.dart';
-import 'package:tipitaka_myanmar/models/bookmark.dart';
-import 'package:tipitaka_myanmar/models/recent.dart';
-import 'package:tipitaka_myanmar/repositories/bookmark_dao.dart';
-import 'package:tipitaka_myanmar/repositories/bookmark_repo.dart';
-import 'package:tipitaka_myanmar/repositories/recent_dao.dart';
-import 'package:tipitaka_myanmar/repositories/recent_repo.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../../data/basic_state.dart';
 import '../../data/constants.dart';
+import '../../data/shared_pref_client.dart';
 import '../../dialogs/goto_dialog.dart';
+import '../../dialogs/simple_input_dialog.dart';
 import '../../dialogs/toc_dialog.dart';
 import '../../models/book.dart';
+import '../../models/bookmark.dart';
+import '../../models/recent.dart';
 import '../../models/toc.dart';
 import '../../repositories/book_dao.dart';
 import '../../repositories/book_repo.dart';
+import '../../repositories/bookmark_dao.dart';
+import '../../repositories/bookmark_repo.dart';
 import '../../repositories/database.dart';
 import '../../repositories/paragraph_repo.dart';
+import '../../repositories/recent_dao.dart';
+import '../../repositories/recent_repo.dart';
 import '../../repositories/toc_repo.dart';
 
 class ReaderViewController {
@@ -49,11 +52,13 @@ class ReaderViewController {
   late final int _lastParagraph;
 
   late final PageController pageController;
+  late final ItemScrollController itemScrollController;
 
   void _init() async {
     _currentPage = ValueNotifier(initialPage);
     // pageview index starts at 0
     pageController = PageController(initialPage: initialPage - 1);
+    itemScrollController = ItemScrollController();
 
     await _loadBookInfo();
     await _loadParagraphInfo();
@@ -107,7 +112,11 @@ class ReaderViewController {
     _currentPage.value = value.round();
     debugPrint('current page: ${_currentPage.value}');
     // pageview start at index 0
-    pageController.jumpToPage(_currentPage.value - 1);
+    if (Platform.isAndroid || Platform.isIOS) {
+      pageController.jumpToPage(_currentPage.value - 1);
+    } else {
+      itemScrollController.jumpTo(index: _currentPage.value - 1);
+    }
     await _saveToRecent();
   }
 
@@ -127,7 +136,11 @@ class ReaderViewController {
           ? response.number
           : await _getPageNumber(paragraphNumber: response.number);
       _currentPage.value = pageNumber;
-      pageController.jumpToPage(_currentPage.value - 1);
+      if (Platform.isAndroid || Platform.isIOS) {
+        pageController.jumpToPage(_currentPage.value - 1);
+      } else {
+        itemScrollController.jumpTo(index: _currentPage.value - 1);
+      }
     }
   }
 
@@ -149,7 +162,11 @@ class ReaderViewController {
         });
     if (toc != null) {
       _currentPage.value = toc.pageNumber;
-      pageController.jumpToPage(_currentPage.value - 1);
+      if (Platform.isAndroid || Platform.isIOS) {
+        pageController.jumpToPage(_currentPage.value - 1);
+      } else {
+        itemScrollController.jumpTo(index: _currentPage.value - 1);
+      }
     }
   }
 

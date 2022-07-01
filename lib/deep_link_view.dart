@@ -26,7 +26,7 @@ class _DeepLinkViewState extends State<DeepLinkView> {
 
     //
 
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
+    WidgetsBinding.instance?.addPostFrameCallback((_) async {
       debugPrint(bookId);
       debugPrint(paragraphNumber);
       if (bookId != null && paragraphNumber != null) {

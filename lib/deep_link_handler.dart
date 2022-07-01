@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'dart:io' show Platform;
 import 'package:flutter/services.dart';
 
 // final deepLinkProvider = Provider.autoDispose((ref) {
@@ -41,9 +41,15 @@ class DeepLinkHandler {
 
   Future<String> startUri() async {
     try {
-      final initialLink = await platform.invokeMethod('initialLink') as String;
-      // print('initialLink: $initialLink');
-      return initialLink;
+      if (Platform.isAndroid || Platform.isIOS) {
+        final initialLink =
+            await platform.invokeMethod('initialLink') as String;
+        // print('initialLink: $initialLink');
+        return initialLink;
+      } else {
+        // empty for desktop
+        return '';
+      }
     } on PlatformException catch (e) {
       return "Failed to Invoke: '${e.message}'.";
     }
