@@ -37,10 +37,13 @@ class SearchListTile extends StatelessWidget {
                     fontSize: 16,
                     color: Theme.of(context).colorScheme.secondary),
               ),
-              Divider(
-                height: 1.0,
-                thickness: 1.0,
-                color: Theme.of(context).colorScheme.secondary,
+              Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: Divider(
+                  height: 1.0,
+                  thickness: 1.0,
+                  color: Theme.of(context).colorScheme.secondary.withAlpha(50),
+                ),
               ),
               SubstringHighlight(
                 text: result.description,
