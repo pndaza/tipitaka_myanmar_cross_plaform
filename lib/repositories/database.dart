@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../data/constants.dart';
@@ -25,8 +26,16 @@ class DatabaseHelper {
 // Open Assets Database
   _initDatabase() async {
     // print('initializing Database');
-    var dbPathToStore = await getDatabasesPath();
-    var dbFilePath = join(dbPathToStore, DatabaseInfo.dbName);
+    late String databasesDirPath;
+
+    if (Platform.isAndroid || Platform.isIOS || Platform.isMacOS) {
+      databasesDirPath = await getDatabasesPath();
+    }
+    if (Platform.isLinux || Platform.isWindows) {
+      final docDirPath = await getApplicationSupportDirectory();
+      databasesDirPath = docDirPath.path;
+    }
+    var dbFilePath = join(databasesDirPath, DatabaseInfo.dbName);
 
     var exists = await databaseExists(dbFilePath);
 
@@ -83,7 +92,7 @@ class DatabaseHelper {
     debugPrint('new db mode');
     // make sure destination path is created
     try {
-      await Directory(dirname(dbPathToStore)).create(recursive: true);
+      await Directory(dirname(databasesDirPath)).create(recursive: true);
     } catch (_) {}
     // saving database
     await _saveDatabaseFromAssets(dbFilePath: dbFilePath);
@@ -93,7 +102,8 @@ class DatabaseHelper {
 
   Future<void> _saveDatabaseFromAssets({required String dbFilePath}) async {
     // Copy from asset
-    final dbFileAssetsPath = join(DatabaseInfo.assetsPath, DatabaseInfo.dbName);
+    const dbFileAssetsPath =
+        '${DatabaseInfo.assetsPath}/${DatabaseInfo.dbName}';
     await _copyDatabase(assetsPath: dbFileAssetsPath, destination: dbFilePath);
 
     // save to pref

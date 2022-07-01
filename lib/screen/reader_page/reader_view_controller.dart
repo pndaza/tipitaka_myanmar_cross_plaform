@@ -82,8 +82,8 @@ class ReaderViewController {
 
   Future<List<String>> _loadPages() async {
     String pageBreakMarker = '--';
-    var content = await rootBundle.loadString(join(
-        AssetsInfo.baseAssetsPath, AssetsInfo.bookAssetPath, bookId + '.html'));
+    var content = await rootBundle.loadString(
+        '${AssetsInfo.baseAssetsPath}/${AssetsInfo.bookAssetPath}/$bookId.html');
     content = _removetTitleTag(content);
     return content.split(pageBreakMarker);
   }
