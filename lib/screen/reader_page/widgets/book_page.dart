@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
-import 'package:fwfh_selectable_text/fwfh_selectable_text.dart';
 import 'package:provider/provider.dart';
 
 import '../../../utils/mm_number.dart';
@@ -29,42 +28,45 @@ class BookPage extends StatelessWidget {
             builder: (_, fontSize, __) {
               var htmlContent = _addPageNumber(pageContent, pageNumber);
               htmlContent = _addHighlight(htmlContent, textToHighlight);
-              return HtmlWidget(
-                htmlContent,
-                textStyle: TextStyle(fontSize: fontSize),
-                factoryBuilder: () => _SelectableFactory(),
-                customStylesBuilder: (element) {
-                  if (element.className == 'title' ||
-                      element.className == 'center' ||
-                      element.className == 'ending' ||
-                      element.localName == 'h1' ||
-                      element.localName == 'h2' ||
-                      element.localName == 'h3' ||
-                      element.localName == 'h4' ||
-                      element.localName == 'h5' ||
-                      element.localName == 'h6') {
-                    return {'text-align': 'center'};
-                  }
+              return SelectionArea(
+                selectionControls: MaterialTextSelectionControls(),
+                child: HtmlWidget(
+                  htmlContent,
+                  textStyle: TextStyle(fontSize: fontSize),
+                  factoryBuilder: () => CustomWidgetFactory(),
+                  customStylesBuilder: (element) {
+                    if (element.className == 'title' ||
+                        element.className == 'center' ||
+                        element.className == 'ending' ||
+                        element.localName == 'h1' ||
+                        element.localName == 'h2' ||
+                        element.localName == 'h3' ||
+                        element.localName == 'h4' ||
+                        element.localName == 'h5' ||
+                        element.localName == 'h6') {
+                      return {'text-align': 'center'};
+                    }
 
-                  if (element.className == 'highlighted') {
-                    return {'background': 'orange', 'color': 'black'};
-                  }
+                    if (element.className == 'highlighted') {
+                      return {'background': 'orange', 'color': 'black'};
+                    }
 
-                  if (element.className == 'page_number') {
-                    return {'color': 'orange'};
-                  }
-                  /*
-            if (element.localName == 'a') {
-              // print('found a tag: ${element.outerHtml}');
-              return {
-                'color': 'black',
-                'text-decoration': 'none',
-              };
-            }
-            */
-                  // no style
-                  return {'text-decoration': 'none'};
-                },
+                    if (element.className == 'page_number') {
+                      return {'color': 'orange'};
+                    }
+                    /*
+                          if (element.localName == 'a') {
+                // print('found a tag: ${element.outerHtml}');
+                return {
+                  'color': 'black',
+                  'text-decoration': 'none',
+                };
+                          }
+                          */
+                    // no style
+                    return {'text-decoration': 'none'};
+                  },
+                ),
               );
             }),
       ),
@@ -76,7 +78,7 @@ class BookPage extends StatelessWidget {
     if (pageNumber == 1) {
       return pageContent;
     } else {
-      return '<hr /><p class="page_number">${MmNumber.get(pageNumber)}</p><br/>$pageContent';
+      return '<p class="page_number">${MmNumber.get(pageNumber)}</p><br/>$pageContent';
     }
   }
 
@@ -90,10 +92,19 @@ class BookPage extends StatelessWidget {
   }
 }
 
-class _SelectableFactory extends WidgetFactory with SelectableTextFactory {
-  // @override
-  // SelectionChangedCallback? get selectableTextOnChanged => (selection, cause) {
-  //   // do something when the selection changes
-  // };
+class CustomWidgetFactory extends WidgetFactory {
+  @override
+  Widget? buildText(BuildMetadata meta, TextStyleHtml tsh, InlineSpan text) {
+    if (meta.overflow == TextOverflow.clip && text is TextSpan) {
+      return Text.rich(
+        text,
+        maxLines: meta.maxLines > 0 ? meta.maxLines : null,
+        textAlign: tsh.textAlign ?? TextAlign.start,
+        textDirection: tsh.textDirection,
+        textScaleFactor: 1.0,
+      );
+    }
 
+    return super.buildText(meta, tsh, text);
+  }
 }
