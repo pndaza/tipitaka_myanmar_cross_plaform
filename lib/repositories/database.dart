@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../data/constants.dart';
@@ -26,6 +27,11 @@ class DatabaseHelper {
   _initDatabase() async {
     // print('initializing Database');
     var dbPathToStore = await getDatabasesPath();
+    if (Platform.isLinux || Platform.isWindows) {
+      final docDirPath = await getApplicationSupportDirectory();
+      dbPathToStore = docDirPath.path;
+    }
+    
     var dbFilePath = join(dbPathToStore, DatabaseInfo.dbName);
 
     var exists = await databaseExists(dbFilePath);

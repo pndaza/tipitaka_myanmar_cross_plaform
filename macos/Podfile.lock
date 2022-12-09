@@ -10,12 +10,15 @@ PODS:
   - sqflite (0.0.2):
     - FlutterMacOS
     - FMDB (>= 2.7.5)
+  - uni_links_desktop (0.0.1):
+    - FlutterMacOS
 
 DEPENDENCIES:
   - FlutterMacOS (from `Flutter/ephemeral`)
   - path_provider_macos (from `Flutter/ephemeral/.symlinks/plugins/path_provider_macos/macos`)
   - shared_preferences_macos (from `Flutter/ephemeral/.symlinks/plugins/shared_preferences_macos/macos`)
   - sqflite (from `Flutter/ephemeral/.symlinks/plugins/sqflite/macos`)
+  - uni_links_desktop (from `Flutter/ephemeral/.symlinks/plugins/uni_links_desktop/macos`)
 
 SPEC REPOS:
   trunk:
@@ -30,6 +33,8 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/shared_preferences_macos/macos
   sqflite:
     :path: Flutter/ephemeral/.symlinks/plugins/sqflite/macos
+  uni_links_desktop:
+    :path: Flutter/ephemeral/.symlinks/plugins/uni_links_desktop/macos
 
 SPEC CHECKSUMS:
   FlutterMacOS: ae6af50a8ea7d6103d888583d46bd8328a7e9811
@@ -37,7 +42,8 @@ SPEC CHECKSUMS:
   path_provider_macos: 3c0c3b4b0d4a76d2bf989a913c2de869c5641a19
   shared_preferences_macos: a64dc611287ed6cbe28fd1297898db1336975727
   sqflite: a5789cceda41d54d23f31d6de539d65bb14100ea
+  uni_links_desktop: 45900fb319df48fcdea2df0756e9c2626696b026
 
-PODFILE CHECKSUM: 6eac6b3292e5142cfc23bdeb71848a40ec51c14c
+PODFILE CHECKSUM: 51819fb193f526758f9d0ccb2ea087fc523bed1f
 
 COCOAPODS: 1.11.2
