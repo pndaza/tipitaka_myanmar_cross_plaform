@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:provider/provider.dart';
+import 'package:tipitaka_myanmar/data/constants.dart';
 
 import '../../../utils/mm_number.dart';
 import '../reader_view_controller.dart';
@@ -32,7 +33,10 @@ class BookPage extends StatelessWidget {
                 selectionControls: MaterialTextSelectionControls(),
                 child: HtmlWidget(
                   htmlContent,
-                  textStyle: TextStyle(fontSize: fontSize),
+                  textStyle: TextStyle(
+                    fontSize: fontSize,
+                    fontFamily: mmFontPyidaungsu,
+                  ),
                   factoryBuilder: () => CustomWidgetFactory(),
                   customStylesBuilder: (element) {
                     if (element.className == 'title' ||

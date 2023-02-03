@@ -10,3 +10,5 @@ class AssetsInfo {
   static const baseAssetsPath = 'assets';
   static const bookAssetPath = 'books';
 }
+
+const String mmFontPyidaungsu = 'Pyidaungsu';

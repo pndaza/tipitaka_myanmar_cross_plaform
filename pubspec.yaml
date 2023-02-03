@@ -46,3 +46,8 @@ flutter:
   - assets/books/
   - assets/info.html
 
+  fonts:
+  - family: Pyidaungsu
+    fonts:
+      - asset: assets/fonts/Pyidaungsu-Regular.ttf
+      - asset: assets/fonts/Pyidaungsu-Bold.ttf

@@ -49,7 +49,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-
     return Provider<ThemeController>(
         create: (_) => ThemeController(),
         builder: (context, __) {
@@ -63,9 +62,11 @@ class _MyAppState extends State<MyApp> {
                     // darkTheme: FlexColorScheme.dark(scheme: FlexScheme.indigo, appBarElevation: 2).toTheme,
                     themeMode: themeMode,
                     theme: ThemeData().copyWith(
-                        colorScheme: const ColorScheme.light().copyWith(
-                            primary: Colors.brown,
-                            secondary: Colors.brown[400])),
+                      colorScheme: const ColorScheme.light().copyWith(
+                        primary: Colors.brown,
+                        secondary: Colors.brown[400],
+                      ),
+                    ),
                     darkTheme: ThemeData.dark(),
                     navigatorKey: _navigatorKey,
                     home: const HomePage());

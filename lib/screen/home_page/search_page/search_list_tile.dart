@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:substring_highlight/substring_highlight.dart';
+import 'package:tipitaka_myanmar/data/constants.dart';
 
 import '../../../models/search_result.dart';
 import '../../../utils/mm_number.dart';
@@ -34,6 +35,7 @@ class SearchListTile extends StatelessWidget {
                 '${result.book.name}၊ နှာ - ${MmNumber.get(result.pageNumber)}',
                 textAlign: TextAlign.left,
                 style: TextStyle(
+                  fontFamily: mmFontPyidaungsu,
                     fontSize: 16,
                     color: Theme.of(context).colorScheme.secondary),
               ),
@@ -48,6 +50,7 @@ class SearchListTile extends StatelessWidget {
               SubstringHighlight(
                 text: result.description,
                 textStyle: TextStyle(
+                  fontFamily: mmFontPyidaungsu,
                     fontSize: 18,
                     color: Theme.of(context).textTheme.bodyText2?.color!),
                 term: textToHighlight,

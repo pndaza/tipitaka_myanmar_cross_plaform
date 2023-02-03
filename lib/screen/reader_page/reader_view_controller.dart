@@ -63,6 +63,7 @@ class ReaderViewController {
     await _loadBookInfo();
     await _loadParagraphInfo();
     pages.addAll(await _loadPages());
+    debugPrint('page: ${pages.length}');
     _fontSize = ValueNotifier(SharedPreferenceClient.fontSize);
     _state.value = StateStaus.data;
     await _saveToRecent();
@@ -81,7 +82,7 @@ class ReaderViewController {
   }
 
   Future<List<String>> _loadPages() async {
-    final pageBreakMarker = RegExp(r'--+');
+    final pageBreakMarker = RegExp(r'\n--+');
     var content = await rootBundle.loadString(join(
         AssetsInfo.baseAssetsPath, AssetsInfo.bookAssetPath, bookId + '.html'));
     content = _removetTitleTag(content);
