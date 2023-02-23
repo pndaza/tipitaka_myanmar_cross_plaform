@@ -1,6 +1,7 @@
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:tipitaka_myanmar/data/constants.dart';
 import 'package:tipitaka_myanmar/models/recent.dart';
 import 'package:tipitaka_myanmar/utils/mm_number.dart';
 
@@ -51,7 +52,7 @@ class RecentListTile extends StatelessWidget {
                               .checkbox_blank_circle_outline),
                   title: Text(
                     recent.bookName!,
-                    style: const TextStyle(fontSize: 20),
+                    style: const TextStyle(fontSize: 20, fontFamily: mmFontPyidaungsu,),
                   ),
                   trailing: SizedBox(
                     width: 105,

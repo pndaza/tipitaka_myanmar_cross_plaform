@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tipitaka_myanmar/repositories/database.dart';
 
 import '../../data/basic_state.dart';
+import '../../repositories/database.dart';
 import '../../widgets/loading_view.dart';
 import 'reader_view_controller.dart';
 import 'widgets/book_control_bar.dart';
@@ -10,15 +10,18 @@ import 'widgets/book_view.dart';
 import 'widgets/reader_app_bar.dart';
 
 class ReaderPage extends StatelessWidget {
+  const ReaderPage({
+    Key? key,
+    required this.bookId,
+    required this.initialPage,
+    this.textToHightlight = '',
+    this.isOpenFromDeepLink = false,
+  }) : super(key: key);
+
   final String bookId;
   final int initialPage;
   final String textToHightlight;
-  const ReaderPage(
-      {Key? key,
-      required this.bookId,
-      required this.initialPage,
-      this.textToHightlight = ''})
-      : super(key: key);
+  final bool isOpenFromDeepLink;
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +29,7 @@ class ReaderPage extends StatelessWidget {
         create: (_) => ReaderViewController(
             bookId: bookId,
             initialPage: initialPage,
+            initialTextToHighlight: textToHightlight,
             databaseHelper: DatabaseHelper()),
         builder: (_, __) {
           //use builder to obtain a BuildContext descendant of the provider
@@ -38,13 +42,21 @@ class ReaderPage extends StatelessWidget {
                     return const Material(child: LoadingView());
                   }
                   debugPrint('data loaded');
-                  return Scaffold(
-                    appBar: ReaderAppBar(title: viewController.book.name),
-                    body: BookView(
-                      pages: viewController.pages,
-                      textToHighlight: textToHightlight,
+                  return Container(
+                    color: Theme.of(context).colorScheme.background,
+                    child: SafeArea(
+                      top: false,
+                      child: Scaffold(
+                        appBar: ReaderAppBar(
+                          title: viewController.book.name,
+                          isOpenFromDeepLink: isOpenFromDeepLink,
+                        ),
+                        body: BookView(
+                          pages: viewController.pages,
+                        ),
+                        bottomNavigationBar: const BookControlBar(),
+                      ),
                     ),
-                    bottomNavigationBar: const BookControlBar(),
                   );
                 });
           });

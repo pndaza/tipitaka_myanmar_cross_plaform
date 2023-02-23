@@ -41,7 +41,7 @@ class _GotoDialogState extends State<GotoDialog> {
   @override
   void initState() {
     super.initState();
-    hintText = 'page (${widget.firstPage}-${widget.lastPage})';
+    hintText = 'စာမျက်နှာ (${widget.firstPage}-${widget.lastPage})';
     selectedTypeIndex = 0;
   }
 
@@ -99,11 +99,11 @@ class _GotoDialogState extends State<GotoDialog> {
           selectedTypeIndex = index;
           if (index == 0) {
             selectedType = GotoType.page;
-            hintText = 'page (${widget.firstPage}-${widget.lastPage})';
+            hintText = 'စာမျက်နှာ (${widget.firstPage}-${widget.lastPage})';
           } else {
             selectedType = GotoType.paragraph;
             hintText =
-                'paragraph (${widget.firstParagraph}-${widget.lastParagraph})';
+                'စာပိုဒ် (${widget.firstParagraph}-${widget.lastParagraph})';
           }
         });
       },
@@ -114,7 +114,7 @@ class _GotoDialogState extends State<GotoDialog> {
 
   Padding _buildInputField() {
     return Padding(
-      padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+      padding: const EdgeInsets.only(left: 32.0, right: 32.0),
       child: TextField(
         controller: controller,
         decoration: InputDecoration(hintText: hintText),

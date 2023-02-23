@@ -27,14 +27,17 @@ import '../../repositories/recent_repo.dart';
 import '../../repositories/toc_repo.dart';
 
 class ReaderViewController {
-  ReaderViewController(
-      {required this.bookId,
-      required this.initialPage,
-      required this.databaseHelper}) {
+  ReaderViewController({
+    required this.bookId,
+    required this.initialPage,
+    this.initialTextToHighlight,
+    required this.databaseHelper,
+  }) {
     _init();
   }
   final String bookId;
   final int initialPage;
+  final String? initialTextToHighlight;
   final DatabaseHelper databaseHelper;
 
   final _state = ValueNotifier<StateStaus>(StateStaus.loading);
@@ -54,8 +57,12 @@ class ReaderViewController {
   late final PageController pageController;
   late final ItemScrollController itemScrollController;
 
+  late String _textToHighlight;
+  String get textToHighlight => _textToHighlight;
+
   void _init() async {
     _currentPage = ValueNotifier(initialPage);
+    _textToHighlight = initialTextToHighlight ?? '';
     // pageview index starts at 0
     pageController = PageController(initialPage: initialPage - 1);
     itemScrollController = ItemScrollController();
@@ -63,6 +70,7 @@ class ReaderViewController {
     await _loadBookInfo();
     await _loadParagraphInfo();
     pages.addAll(await _loadPages());
+    debugPrint('page: ${pages.length}');
     _fontSize = ValueNotifier(SharedPreferenceClient.fontSize);
     _state.value = StateStaus.data;
     await _saveToRecent();
@@ -81,9 +89,10 @@ class ReaderViewController {
   }
 
   Future<List<String>> _loadPages() async {
-    String pageBreakMarker = '--';
-    var content = await rootBundle.loadString(
-        '${AssetsInfo.baseAssetsPath}/${AssetsInfo.bookAssetPath}/$bookId.html');
+
+    final pageBreakMarker = RegExp(r'\n--+');
+    var content = await rootBundle.loadString(join(
+        AssetsInfo.baseAssetsPath, AssetsInfo.bookAssetPath, bookId + '.html'));
     content = _removetTitleTag(content);
     return content.split(pageBreakMarker);
   }
@@ -162,6 +171,8 @@ class ReaderViewController {
         });
     if (toc != null) {
       _currentPage.value = toc.pageNumber;
+      _textToHighlight = toc.name;
+
       if (Platform.isAndroid || Platform.isIOS) {
         pageController.jumpToPage(_currentPage.value - 1);
       } else {

@@ -1,3 +1,7 @@
+//
+// obsolete
+//
+/*
 import 'package:flutter/material.dart';
 import 'package:tipitaka_myanmar/repositories/database.dart';
 import 'package:tipitaka_myanmar/repositories/paragraph_repo.dart';
@@ -26,7 +30,7 @@ class _DeepLinkViewState extends State<DeepLinkView> {
 
     //
 
-    WidgetsBinding.instance?.addPostFrameCallback((_) async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       debugPrint(bookId);
       debugPrint(paragraphNumber);
       if (bookId != null && paragraphNumber != null) {
@@ -37,8 +41,10 @@ class _DeepLinkViewState extends State<DeepLinkView> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (_) =>
-                    ReaderPage(bookId: bookId!, initialPage: pageNumber)));
+                builder: (_) => ReaderPage(
+                      bookId: bookId!,
+                      initialPage: pageNumber,
+                    )));
       }
     });
   }
@@ -53,14 +59,23 @@ class _DeepLinkViewState extends State<DeepLinkView> {
   }
 
   String? parseBookId(String url) {
+    final uri = Uri.parse(url);
+    return uri.queryParameters['id'];
+    /*
     RegExp regexId = RegExp(r'\w+_\w+_\d+(_\d+)?');
     final matchId = regexId.firstMatch(url);
     return matchId?.group(0);
+    */
   }
 
   String? parseParagraphNumber(String url) {
+    final uri = Uri.parse(url);
+    return uri.queryParameters['paragraph'];
+    /*
     RegExp regexPage = RegExp(r'\d+$');
     final matchPage = regexPage.firstMatch(url);
     return matchPage?.group(0);
+    */
   }
 }
+*/

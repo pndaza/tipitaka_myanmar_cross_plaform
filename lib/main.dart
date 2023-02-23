@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:tipitaka_myanmar/data/shared_pref_client.dart';
+import 'package:uni_links_desktop/uni_links_desktop.dart';
 
 import 'app.dart';
 
@@ -22,6 +23,11 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Initialize SharedPrefs instance.
 
+  // deep link for windows
+  if (Platform.isWindows) {
+    registerProtocol('tipitakamyanmar');
+  }
+  
   await SharedPreferenceClient.init();
   runApp(const MyApp());
 }

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:tipitaka_myanmar/screen/home_page/book_list_page/book_list_page.dart';
-import 'package:tipitaka_myanmar/screen/home_page/bookmark_page/bookmark_page.dart';
-import 'package:tipitaka_myanmar/screen/home_page/recent_page/recent_page.dart';
-import 'package:tipitaka_myanmar/screen/home_page/search_page/search_page.dart';
+
+import 'book_list_page/book_list_page.dart';
+import 'bookmark_page/bookmark_page.dart';
+import 'recent_page/recent_page.dart';
+import 'search_page/search_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
