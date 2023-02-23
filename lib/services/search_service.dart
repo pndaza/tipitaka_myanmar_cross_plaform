@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import '../models/book.dart';
 import '../models/search_result.dart';
 import '../repositories/book_dao.dart';
@@ -18,10 +20,9 @@ class SearchService {
       String bookContent =
           await AssetBookReader.loadContent(bookID: books[i].id);
       bookContent = _removeAllHtmlTags(bookContent);
-      List<String> pages = bookContent.split('--');
+      List<String> pages = bookContent.split(RegExp(r'\n--+'));
       // pages.removeAt(0);
       pages.removeLast();
-      // print('number of page: ${pages.length}');
       for (int j = 0; j < pages.length; j++) {
         int start = 0;
         while (true) {
@@ -60,7 +61,7 @@ class SearchService {
     int length = pageContent.length;
     int startIndexOfQuery = index;
     int endIndexOfQuery = startIndexOfQuery + searchWord.length;
-    int briefCharCount = 65;
+    int briefCharCount = (Platform.isMacOS || Platform.isWindows || Platform.isLinux) ? 100 : 65;
     int counter = 1;
 
     while (startIndexOfQuery - counter >= 0 && counter < briefCharCount) {

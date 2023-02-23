@@ -35,7 +35,7 @@ class SearchListTile extends StatelessWidget {
                 '${result.book.name}၊ နှာ - ${MmNumber.get(result.pageNumber)}',
                 textAlign: TextAlign.left,
                 style: TextStyle(
-                  fontFamily: mmFontPyidaungsu,
+                    fontFamily: mmFontPyidaungsu,
                     fontSize: 16,
                     color: Theme.of(context).colorScheme.secondary),
               ),
@@ -50,11 +50,12 @@ class SearchListTile extends StatelessWidget {
               SubstringHighlight(
                 text: result.description,
                 textStyle: TextStyle(
-                  fontFamily: mmFontPyidaungsu,
+                    fontFamily: mmFontPyidaungsu,
                     fontSize: 18,
-                    color: Theme.of(context).textTheme.bodyText2?.color!),
+                    color: Theme.of(context).colorScheme.onBackground),
                 term: textToHighlight,
                 textStyleHighlight: TextStyle(
+                    fontFamily: mmFontPyidaungsu,
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).colorScheme.secondary),

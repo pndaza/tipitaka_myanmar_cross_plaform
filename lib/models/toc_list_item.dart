@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tipitaka_myanmar/data/constants.dart';
 import 'toc.dart';
 
 abstract class TocListItem {
@@ -18,7 +19,11 @@ class TocHeadingOne implements TocListItem {
   @override
   Widget build(BuildContext context) {
     return Text(toc.name,
-        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold));
+        style: const TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+          fontFamily: mmFontPyidaungsu,
+        ));
   }
 }
 
@@ -36,7 +41,11 @@ class TocHeadingTwo implements TocListItem {
     return Padding(
         padding: const EdgeInsets.only(left: 16.0),
         child: Text(toc.name,
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)));
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              fontFamily: mmFontPyidaungsu,
+            )));
   }
 }
 
@@ -53,7 +62,11 @@ class TocHeadingThree implements TocListItem {
   Widget build(BuildContext context) {
     return Padding(
         padding: const EdgeInsets.only(left: 32.0),
-        child: Text(toc.name, style: const TextStyle(fontSize: 18)));
+        child: Text(toc.name,
+            style: const TextStyle(
+              fontSize: 18,
+              fontFamily: mmFontPyidaungsu,
+            )));
   }
 }
 
@@ -70,7 +83,11 @@ class TocHeadingFour implements TocListItem {
   Widget build(BuildContext context) {
     return Padding(
         padding: const EdgeInsets.only(left: 48.0),
-        child: Text(toc.name, style: const TextStyle(fontSize: 18)));
+        child: Text(toc.name,
+            style: const TextStyle(
+              fontSize: 18,
+              fontFamily: mmFontPyidaungsu,
+            )));
   }
 }
 
@@ -87,6 +104,10 @@ class TocHeadingFive implements TocListItem {
   Widget build(BuildContext context) {
     return Padding(
         padding: const EdgeInsets.only(left: 64.0),
-        child: Text(toc.name, style: const TextStyle(fontSize: 18)));
+        child: Text(toc.name,
+            style: const TextStyle(
+              fontSize: 18,
+              fontFamily: mmFontPyidaungsu,
+            )));
   }
 }

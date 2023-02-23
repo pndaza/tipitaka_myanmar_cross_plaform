@@ -160,6 +160,7 @@ class _MyAppState extends State<MyApp> {
       final route = readerRoute(
         bookId: bookId,
         pageNumber: pageNumber,
+        textToHighlight: paragraphNumber
       );
 
       _navigatorKey.currentState
@@ -168,11 +169,12 @@ class _MyAppState extends State<MyApp> {
   }
 
   MaterialPageRoute readerRoute(
-          {required String bookId, required int pageNumber}) =>
+          {required String bookId, required int pageNumber, String? textToHighlight}) =>
       MaterialPageRoute(
         builder: (_) => ReaderPage(
           bookId: bookId,
           initialPage: pageNumber,
+          textToHightlight: textToHighlight ?? '',
           isOpenFromDeepLink: true,
         ),
       );

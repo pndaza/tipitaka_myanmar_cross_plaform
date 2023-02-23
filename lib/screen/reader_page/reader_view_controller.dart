@@ -2,8 +2,6 @@ import 'dart:io' show Platform;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:path/path.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../../data/basic_state.dart';
@@ -89,10 +87,9 @@ class ReaderViewController {
   }
 
   Future<List<String>> _loadPages() async {
-
     final pageBreakMarker = RegExp(r'\n--+');
-    var content = await rootBundle.loadString(join(
-        AssetsInfo.baseAssetsPath, AssetsInfo.bookAssetPath, bookId + '.html'));
+    var content = await rootBundle.loadString(
+        '${AssetsInfo.baseAssetsPath}/${AssetsInfo.bookAssetPath}/$bookId.html');
     content = _removetTitleTag(content);
     return content.split(pageBreakMarker);
   }
@@ -160,15 +157,45 @@ class ReaderViewController {
 
   Future<void> onTocButtonClicked(BuildContext context) async {
     final tocs = await _fetchToc();
-    final toc = await showBarModalBottomSheet<Toc>(
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
-        ),
-        expand: false,
-        context: context,
-        builder: (context) {
-          return TocDialog(tocs: tocs);
-        });
+    const sideSheetWidth = 400.0;
+    final toc = await showGeneralDialog<Toc>(
+      context: context,
+      barrierLabel: 'TOC',
+      barrierDismissible: true,
+      transitionDuration: const Duration(milliseconds: 200),
+      transitionBuilder: (context, animation, secondaryAnimation, child) {
+        return SlideTransition(
+          position:
+              Tween(begin: const Offset(1, 0), end: const Offset(0, 0)).animate(
+            CurvedAnimation(parent: animation, curve: Curves.easeInOutSine),
+          ),
+          child: child,
+        );
+      },
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return Align(
+          alignment: Alignment.centerRight,
+          child: Material(
+            type: MaterialType.transparency,
+            child: Container(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
+              width: MediaQuery.of(context).size.width > 600
+                  ? sideSheetWidth
+                  : double.infinity,
+              decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.background,
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(16),
+                    bottomLeft: Radius.circular(16),
+                  )),
+              child: TocDialog(tocs: tocs),
+            ),
+          ),
+        );
+      },
+    );
+
     if (toc != null) {
       _currentPage.value = toc.pageNumber;
       _textToHighlight = toc.name;

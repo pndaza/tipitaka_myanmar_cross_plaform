@@ -48,7 +48,7 @@ class ConfirmDialog extends StatelessWidget {
           ? Container(
               height: 8.0,
             )
-          : Text(title, style: Theme.of(context).textTheme.button),
+          : Text(title, style: Theme.of(context).textTheme.titleMedium),
     );
   }
 

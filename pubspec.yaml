@@ -13,15 +13,15 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_widget_from_html_core: ^0.9.1
   sqflite: ^2.0.2
+  sqflite_common_ffi: ^2.1.0+2
+  sqlite3_flutter_libs: ^0.5.12
   path_provider: ^2.0.8
   path: ^1.8.0
   freezed_annotation: ^1.1.0
   provider: ^6.0.2
-  sqflite_common_ffi: ^2.1.0+2
   sharedpreference: ^0.0.1
   grouped_list: ^4.1.0
   toggle_switch: ^1.4.0
-  modal_bottom_sheet: ^2.1.2
   flutter_slidable: ^1.2.0
   substring_highlight: ^1.0.33
   community_material_icon: ^5.9.55
@@ -37,6 +37,17 @@ dev_dependencies:
   flutter_lints: ^1.0.0
   freezed: ^1.1.1
   build_runner: ^2.1.7
+  msix: ^3.7.0
+
+msix_config:
+  display_name: Tipitaka Myanmar
+  identity_name: 38337PnDaza.TipitakaMyanmar
+  publisher_display_name: PnDaza
+  publisher: CN=D6488D0D-2C1E-4BF6-9E71-85196599EEB3
+  msix_version: 1.0.0.0
+  protocol_activation: tipitakamyanmar
+  store: true
+  logo_path: .\assets\images\tipi_mm.png
 
 flutter:
   uses-material-design: true
