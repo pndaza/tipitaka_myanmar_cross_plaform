@@ -27,14 +27,17 @@ import '../../repositories/recent_repo.dart';
 import '../../repositories/toc_repo.dart';
 
 class ReaderViewController {
-  ReaderViewController(
-      {required this.bookId,
-      required this.initialPage,
-      required this.databaseHelper}) {
+  ReaderViewController({
+    required this.bookId,
+    required this.initialPage,
+    this.initialTextToHighlight,
+    required this.databaseHelper,
+  }) {
     _init();
   }
   final String bookId;
   final int initialPage;
+  final String? initialTextToHighlight;
   final DatabaseHelper databaseHelper;
 
   final _state = ValueNotifier<StateStaus>(StateStaus.loading);
@@ -54,8 +57,12 @@ class ReaderViewController {
   late final PageController pageController;
   late final ItemScrollController itemScrollController;
 
+  late String _textToHighlight;
+  String get textToHighlight => _textToHighlight;
+
   void _init() async {
     _currentPage = ValueNotifier(initialPage);
+    _textToHighlight = initialTextToHighlight ?? '';
     // pageview index starts at 0
     pageController = PageController(initialPage: initialPage - 1);
     itemScrollController = ItemScrollController();
@@ -163,6 +170,8 @@ class ReaderViewController {
         });
     if (toc != null) {
       _currentPage.value = toc.pageNumber;
+      _textToHighlight = toc.name;
+
       if (Platform.isAndroid || Platform.isIOS) {
         pageController.jumpToPage(_currentPage.value - 1);
       } else {

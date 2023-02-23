@@ -29,6 +29,7 @@ class ReaderPage extends StatelessWidget {
         create: (_) => ReaderViewController(
             bookId: bookId,
             initialPage: initialPage,
+            initialTextToHighlight: textToHightlight,
             databaseHelper: DatabaseHelper()),
         builder: (_, __) {
           //use builder to obtain a BuildContext descendant of the provider
@@ -41,16 +42,21 @@ class ReaderPage extends StatelessWidget {
                     return const Material(child: LoadingView());
                   }
                   debugPrint('data loaded');
-                  return Scaffold(
-                    appBar: ReaderAppBar(
-                      title: viewController.book.name,
-                      isOpenFromDeepLink: isOpenFromDeepLink,
+                  return Container(
+                    color: Theme.of(context).colorScheme.background,
+                    child: SafeArea(
+                      top: false,
+                      child: Scaffold(
+                        appBar: ReaderAppBar(
+                          title: viewController.book.name,
+                          isOpenFromDeepLink: isOpenFromDeepLink,
+                        ),
+                        body: BookView(
+                          pages: viewController.pages,
+                        ),
+                        bottomNavigationBar: const BookControlBar(),
+                      ),
                     ),
-                    body: BookView(
-                      pages: viewController.pages,
-                      textToHighlight: textToHightlight,
-                    ),
-                    bottomNavigationBar: const BookControlBar(),
                   );
                 });
           });
