@@ -64,10 +64,12 @@ class _BookViewState extends State<BookView> {
       physics: const PageScrollPhysics(),
       itemCount: widget.pages.length,
       itemBuilder: (_, index) {
-        return BookPage(
-          pageContent: widget.pages[index],
-          pageNumber: index + 1,
-          textToHighlight: viewController.textToHighlight,
+        return SingleChildScrollView(
+          child: BookPage(
+            pageContent: widget.pages[index],
+            pageNumber: index + 1,
+            textToHighlight: viewController.textToHighlight,
+          ),
         );
       },
       controller: context.read<ReaderViewController>().pageController,

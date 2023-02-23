@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:tipitaka_myanmar/utils/mm_number.dart';
 import 'package:uni_links/uni_links.dart';
 
 import 'controllers/theme_controller.dart';
@@ -160,7 +161,7 @@ class _MyAppState extends State<MyApp> {
       final route = readerRoute(
         bookId: bookId,
         pageNumber: pageNumber,
-        textToHighlight: paragraphNumber
+        textToHighlight: MmNumber.get(int.parse(paragraphNumber))
       );
 
       _navigatorKey.currentState

@@ -34,61 +34,58 @@ class _BookPageState extends State<BookPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      controller: ScrollController(),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: ValueListenableBuilder<double>(
-            valueListenable: context.read<ReaderViewController>().fontSize,
-            builder: (_, fontSize, __) {
-              var htmlContent =
-                  _addPageNumber(widget.pageContent, widget.pageNumber);
-              htmlContent = _addHighlight(htmlContent, widget.textToHighlight);
-              return SelectionArea(
-                selectionControls: MaterialTextSelectionControls(),
-                child: HtmlWidget(
-                  htmlContent,
-                  factoryBuilder: () => myFactory,
-                  textStyle: TextStyle(
-                    fontSize: fontSize,
-                    fontFamily: mmFontPyidaungsu,
-                  ),
-                  customStylesBuilder: (element) {
-                    if (element.className == 'title' ||
-                        element.className == 'center' ||
-                        element.className == 'ending' ||
-                        element.localName == 'h1' ||
-                        element.localName == 'h2' ||
-                        element.localName == 'h3' ||
-                        element.localName == 'h4' ||
-                        element.localName == 'h5' ||
-                        element.localName == 'h6') {
-                      return {'text-align': 'center'};
-                    }
-
-                    if (element.className == 'highlighted') {
-                      return {'background': 'orange', 'color': 'black'};
-                    }
-
-                    if (element.className == 'page_number') {
-                      return {'color': 'orange'};
-                    }
-                    /*
-                          if (element.localName == 'a') {
-                // print('found a tag: ${element.outerHtml}');
-                return {
-                  'color': 'black',
-                  'text-decoration': 'none',
-                };
-                          }
-                          */
-                    // no style
-                    return {'text-decoration': 'none'};
-                  },
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ValueListenableBuilder<double>(
+          valueListenable: context.read<ReaderViewController>().fontSize,
+          builder: (_, fontSize, __) {
+            var htmlContent =
+                _addPageNumber(widget.pageContent, widget.pageNumber);
+            htmlContent = _addHighlight(htmlContent, widget.textToHighlight);
+            return SelectionArea(
+              selectionControls: MaterialTextSelectionControls(),
+              child: HtmlWidget(
+                htmlContent,
+                factoryBuilder: () => myFactory,
+                textStyle: TextStyle(
+                  fontSize: fontSize,
+                  fontFamily: mmFontPyidaungsu,
                 ),
-              );
-            }),
-      ),
+                customStylesBuilder: (element) {
+                  if (element.className == 'title' ||
+                      element.className == 'center' ||
+                      element.className == 'ending' ||
+                      element.localName == 'h1' ||
+                      element.localName == 'h2' ||
+                      element.localName == 'h3' ||
+                      element.localName == 'h4' ||
+                      element.localName == 'h5' ||
+                      element.localName == 'h6') {
+                    return {'text-align': 'center'};
+                  }
+
+                  if (element.className == 'highlighted') {
+                    return {'background': 'orange', 'color': 'black'};
+                  }
+
+                  if (element.className == 'page_number') {
+                    return {'color': 'orange'};
+                  }
+                  /*
+                        if (element.localName == 'a') {
+              // print('found a tag: ${element.outerHtml}');
+              return {
+                'color': 'black',
+                'text-decoration': 'none',
+              };
+                        }
+                        */
+                  // no style
+                  return {'text-decoration': 'none'};
+                },
+              ),
+            );
+          }),
     );
   }
 
