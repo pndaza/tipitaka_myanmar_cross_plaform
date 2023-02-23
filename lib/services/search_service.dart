@@ -12,6 +12,7 @@ class SearchService {
 
   static Future<List<SearchResult>> getResults(String searchWord) async {
     List<SearchResult> results = [];
+        int briefCharCount = (Platform.isMacOS || Platform.isWindows || Platform.isLinux) ? 100 : 65;
     DatabaseHelper databaseHelper = DatabaseHelper();
     BookRepository bookRepository =
         DatabaseBookRepository(databaseHelper, BookDao());
@@ -33,7 +34,8 @@ class SearchService {
             // print('${books[i].name} page-$j');
             // print('found at $index');
             String description =
-                _extractDescription(pages[j], index, searchWord);
+                _extractDescription(
+                 pageContent: pages[j],index: index,searchWord: searchWord, briefCharCount: briefCharCount);
             start = (index + 1);
             final book = Book(id: books[i].id, name: books[i].name);
             final pageNumber = j + 1;
@@ -56,12 +58,15 @@ class SearchService {
     return htmlText.replaceAll(exp, '');
   }
 
-  static String _extractDescription(
-      String pageContent, int index, String searchWord) {
+  static String _extractDescription({
+    required String pageContent,
+    required int index,
+    required String searchWord,
+    int briefCharCount = 64,
+  }) {
     int length = pageContent.length;
     int startIndexOfQuery = index;
     int endIndexOfQuery = startIndexOfQuery + searchWord.length;
-    int briefCharCount = (Platform.isMacOS || Platform.isWindows || Platform.isLinux) ? 100 : 65;
     int counter = 1;
 
     while (startIndexOfQuery - counter >= 0 && counter < briefCharCount) {
